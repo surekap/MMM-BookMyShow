@@ -1,0 +1,24 @@
+{
+  "name": "mmm-bookmyshow",
+  "version": "1.0.0",
+  "description": "BookMyShow.com Module for MagicMirror2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fewieden/MMM-BookMyShow.git"
+  },
+  "keywords": [
+    "MagicMirror",
+    "upcoming movies",
+	"BookMyShow",
+	"BookMyShow.com"
+  ],
+  "author": "surekap",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/surekap/MMM-BookMyShow/issues"
+  },
+  "homepage": "https://github.com/surekap/MMM-BookMyShow#readme",
+  "dependencies": {
+    "moment": "^2.17.1"
+  }
+}
