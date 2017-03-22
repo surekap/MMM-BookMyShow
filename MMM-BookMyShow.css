@@ -1,5 +1,5 @@
-.MMM-BookMyShow .wrapper{
-    width:185px;
+.MMM-BookMyShow .wrapper {
+    width: 185px;
     display: flex;
     align-content: center;
     flex-direction: column;
@@ -7,11 +7,12 @@
 
 .MMM-BookMyShow .poster {
     -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
     margin-bottom: 5px;
 }
 
 .MMM-BookMyShow .badge {
-    background-color: #FFF;
+    background-color: #fff;
     color: #000;
     border-radius: 3px;
     padding: 0px 2px;

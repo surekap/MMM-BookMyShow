@@ -117,7 +117,12 @@ def download_plays():
         
         page = requests.get(detail_url)
         tree = html.fromstring(page.content)
-        synopsis = [x.replace("\t", "").replace("\n", "") for x in tree.xpath('//div[@class="synopsis"]/text()')][0]
+        synopsis = [x.replace("\t", "").replace("\n", "") for x in tree.xpath('//div[@class="synopsis"]/text()')]
+        if (len(synopsis) > 0):
+            synopsis = synopsis[0]
+        else:
+            synopsis = ""
+            
         duration = tree.xpath('//div[@class="tags"]/span[contains(text(), "min")]/text()')
         
         plays.append({'title':play_names[i], 'genres':genres, 'language':language, 'dates':datecode, 'location':location, 'poster_path':"https:" + play_poster[i], 'synopsis':synopsis, 'duration':duration})
