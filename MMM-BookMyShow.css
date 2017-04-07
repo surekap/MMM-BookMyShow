@@ -9,6 +9,8 @@
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
     margin-bottom: 5px;
+    height: 230px;
+    object-fit: scale-down;
 }
 
 .MMM-BookMyShow .badge {
