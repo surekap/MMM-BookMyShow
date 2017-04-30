@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from lxml import html
-import json, re, os
+import json, re, os, sys
 import requests
 import datetime, time
 
@@ -24,7 +24,11 @@ def download_movies():
     movies = []
     #filter this list to remove any which are not english
     for i, movie in enumerate(c_movies):
-        languages = tree.xpath('//*[@id="now-showing"]/section[1]/div/div[2]/div[2]/div/div/div/div[3]/div[1]/a[text()="' + movie + '"]/../../div[@class="languages"]/ul/li/text()');
+        languages = tree.xpath('//*[@id="now-showing"]/section[1]/div/div[2]/div[2]/div/div/div/div[3]/div[1]/a[text()="' + movie + '"]/../../div[@class="languages"]/ul/li/text()')
+        #pprint.pprint(languages)
+        #pprint.pprint(c_movie_links[i])
+        
+        languages = [x.replace(", ", "") for x in languages];
         
         global LANGUAGES
         for x in LANGUAGES:
@@ -32,7 +36,6 @@ def download_movies():
                 movies.append({'title':movie, 'href':c_movie_links[i], 'code':c_movie_links[i].split('/')[-1], 'shows':{}})
                 break
                 
-    
     # now go to the movie page and get the showtimes from Quest, SouthCity and Forum [post 7pm]
     
     for movie in movies:
@@ -61,11 +64,14 @@ def download_movies():
             p = requests.get("https://in.bookmyshow.com/serv/getData/?cmd=GETSHOWTIMESBYEVENTANDVENUE&f=json&dc=" + dc + "&vc=" + v + "&ec=" + movie['code'])
             showtimes = json.loads(p.content)
             
+            #print movie['title'], movie['code'], v, "---", venue
+            #pprint.pprint(showtimes)
+            
             movie['shows'][venue] = []
             
             showtimes = showtimes['BookMyShow']['arrShows']
             for show in showtimes:
-                if (int(show['ShowTimeNumeric']) < (SHOWTIME_HOUR * 100)):
+                if ((int(show['ShowTimeNumeric']) < (SHOWTIME_HOUR * 100)) and datetime.datetime.now().isoweekday() in range(1, 6)):
                     continue
                 if (show['Availability'] != "Y"):
                     continue
@@ -131,6 +137,7 @@ def download_plays():
     
 def download():
     movies = download_movies()
+    #sys.exit()
     plays = download_plays()
     everything = movies + plays
     payload = {
@@ -143,7 +150,7 @@ def download():
     return payload
     
 if __name__ == "__main__":
-    
+    #download()
     if not os.path.isfile('bms.json'):
         f = open('bms.json', 'wb')
         f.write(json.dumps({'ts':0, "results":[]}))
